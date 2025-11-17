@@ -144,46 +144,46 @@ void procesarSolicitudes() {
         MensajeRespuesta resp; 	// Se declara estructura para recibir datos del controlador.
         int escritos, leidos; 	// Se declaran variables para almacenar bytes enviados y leídos.
 
-        msg.tipo = 1; 			// Se define el tipo de mensaje como solicitud (1).
+        msg.tipo = 1; 			        // Se define el tipo de mensaje como solicitud (1).
         msg.nombre_agente[0] = '\0'; 	// Se inicializa cadena nombre_agente.
         msg.pipe_respuesta[0] = '\0'; 	// Se inicializa cadena pipe_respuesta.
-        msg.familia[0] = '\0'; 		// Se inicializa cadena familia.
-        msg.hora_solicitada = 0; 	// Se inicializa hora solicitada en 0.
-        msg.n_personas = 0; 		// Se inicializa cantidad de personas en 0.
+        msg.familia[0] = '\0'; 		    // Se inicializa cadena familia.
+        msg.hora_solicitada = hora; 	// Se inicializa hora solicitada en la hora solicitada.
+        msg.n_personas = personas; 		// Se inicializa cantidad de personas de la familia.
 
-        strncpy(msg.nombre_agente, nombreAgente, MAX_NOMBRE - 1); 		// Se copia nombre del agente al mensaje
-        msg.nombre_agente[MAX_NOMBRE - 1] = '\0'; 				// Se asegura la terminación nula
-        strncpy(msg.pipe_respuesta, pipeRespuesta, MAX_PIPE_NAME - 1); 		// Se copia el pipe respuesta
-        msg.pipe_respuesta[MAX_PIPE_NAME - 1] = '\0'; 				// Se asegura la terminación nula
-        strncpy(msg.familia, familia, MAX_FAMILIA - 1); 			// Se copia el nombre de familia
-        msg.familia[MAX_FAMILIA - 1] = '\0'; 					// Se asegura la terminación nula
+        strncpy(msg.nombre_agente, nombreAgente, MAX_NOMBRE - 1); 		// Se copia nombre del agente al mensaje.
+        msg.nombre_agente[MAX_NOMBRE - 1] = '\0'; 				        // Se asegura la terminación nula.
+        strncpy(msg.pipe_respuesta, pipeRespuesta, MAX_PIPE_NAME - 1); 	// Se copia el pipe respuesta.
+        msg.pipe_respuesta[MAX_PIPE_NAME - 1] = '\0'; 				    // Se asegura la terminación nula.
+        strncpy(msg.familia, familia, MAX_FAMILIA - 1); 			    // Se copia el nombre de familia.
+        msg.familia[MAX_FAMILIA - 1] = '\0'; 					        // Se asegura la terminación nula.
 
         /* Enviar la solicitud */
-        escritos = write(fd_pipe_controlador, &msg, sizeof(MensajeSolicitud)); 		// Se envía el mensaje al controlador
-        if (escritos != (int)sizeof(MensajeSolicitud)) { 				// Se verifica la escritura
-            fprintf(stderr, "[AGENTE %s] Error enviando solicitud.\n", nombreAgente); 	// Se imprime error
-            break; 									// Se sale del ciclo
+        escritos = write(fd_pipe_controlador, &msg, sizeof(MensajeSolicitud)); 		    // Se envía el mensaje al controlador.
+        if (escritos != (int)sizeof(MensajeSolicitud)) { 				                // Se verifica la escritura.
+            fprintf(stderr, "[AGENTE %s] Error enviando solicitud.\n", nombreAgente); 	// Se imprime error.
+            break; 									                                    // Se sale del ciclo.
         }
 
         /* Recibir respuesta */
-        leidos = read(fd_pipe_respuesta, &resp, sizeof(MensajeRespuesta)); 		// Se lee respuesta del controlador
-        if (leidos != (int)sizeof(MensajeRespuesta)) { 					// Se verifica lectura
-            fprintf(stderr, "[AGENTE %s] Error leyendo respuesta.\n", nombreAgente); 	// Se imprime error
-            break; 									// Se sale del ciclo
+        leidos = read(fd_pipe_respuesta, &resp, sizeof(MensajeRespuesta)); 		        // Se lee respuesta del controlador.
+        if (leidos != (int)sizeof(MensajeRespuesta)) { 					                // Se verifica lectura.
+            fprintf(stderr, "[AGENTE %s] Error leyendo respuesta.\n", nombreAgente); 	// Se imprime error.
+            break; 									                                    // Se sale del ciclo.
         }
         
         /* Imprimir respuesta */
-        printf("[AGENTE %s] Familia: %s → %s\n", nombreAgente, familia, resp.mensaje);	// Se imprime la respuesta del controlador
+        printf("[AGENTE %s] Familia: %s → %s\n", nombreAgente, familia, resp.mensaje);	// Se imprime la respuesta del controlador.
 
-        sleep(2);	// Se espera 2 segundos antes de procesar la siguiente solicitud
+        sleep(2);	// Se espera 2 segundos antes de procesar la siguiente solicitud.
     }
 
-    fclose(f);	// Se cierra el archivo de solicitudes
+    fclose(f);	// Se cierra el archivo de solicitudes.
 }
 
 void limpiarNuevaLinea(char *str) {
-    int n = strlen(str);		// Se obtiene la longitud de la cadena
-    if (n > 0 && str[n - 1] == '\n') {	// Se verifica si el último carácter es un salto de línea
-        str[n - 1] = '\0';		// Se reemplaza el salto de línea por terminación nula
+    int n = strlen(str);		// Se obtiene la longitud de la cadena.
+    if (n > 0 && str[n - 1] == '\n') {	// Se verifica si el último carácter es un salto de línea.
+        str[n - 1] = '\0';		// Se reemplaza el salto de línea por terminación nula.
     }
-}	
+}

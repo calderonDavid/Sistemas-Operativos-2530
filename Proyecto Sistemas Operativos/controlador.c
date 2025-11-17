@@ -287,8 +287,7 @@ void crearYPonerPipeRecibe(void) {
     }
 
     printf("Controlador: pipe de recepción '%s' creado y abierto.\n", nombrePipeRecibe);
-    printf("Simulación desde hora %d hasta %d, %d seg/hora, aforo máximo %d personas.\n",
-           horaIni, horaFin, segHoras, aforoMaximo);
+    printf("Simulación desde hora %d hasta %d, %d seg/hora, aforo máximo %d personas.\n",horaIni, horaFin, segHoras, aforoMaximo);
 }
 
 /******* Hilo del reloj ********/
