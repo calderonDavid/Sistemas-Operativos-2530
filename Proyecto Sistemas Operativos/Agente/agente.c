@@ -28,21 +28,21 @@ int main(int argc, char *argv[]) {
 
     /* Crear el pipe de respuesta (pero NO lo abrimos todavía) */
     if (mkfifo(pipeRespuesta, 0666) == -1) {		// Se crea el pipe FIFO que usará el controlador para enviar respuestas al agente.
-        if (errno != EEXIST) {				// Se verifica si el error no corresponde a que el pipe ya existe.
-            perror("mkfifo pipeRespuesta");		// Se imprime error, si la creación del pipe falla.
-            exit(EXIT_FAILURE);				// Se finaliza el programa .
+        if (errno != EEXIST) {				        // Se verifica si el error no corresponde a que el pipe ya existe.
+            perror("mkfifo pipeRespuesta");		    // Se imprime error, si la creación del pipe falla.
+            exit(EXIT_FAILURE);				        // Se finaliza el programa .
         }
     }
 
     /* Abrir el pipe del controlador en modo escritura */
     fd_pipe_controlador = open(pipeRecibe, O_WRONLY);	// Se abre el pipe del controlador para enviarle mensajes.
     if (fd_pipe_controlador == -1) {   
-        perror("open pipeRecibe");			// Se imprime un mensaje de error si no se puede abrir el pipe del controlador.
-        exit(EXIT_FAILURE);   				// Se cierra el programa porque no hay conexión con el controlador.
+        perror("open pipeRecibe");			            // Se imprime un mensaje de error si no se puede abrir el pipe del controlador.
+        exit(EXIT_FAILURE);   				            // Se cierra el programa porque no hay conexión con el controlador.
     }
 
     /* Registrar agente con el controlador (dentro se abre el pipeRespuesta) */
-    registrarAgente(); // Se registra el agente ante el controlador enviando un mensaje inicial.
+    registrarAgente();      // Se registra el agente ante el controlador enviando un mensaje inicial.
 
     /* Ahora ya tenemos fd_pipe_respuesta abierto y podemos procesar solicitudes */
     procesarSolicitudes();	// Se procesan todas las solicitudes del archivo CSV y se envían al controlador.
@@ -51,7 +51,7 @@ int main(int argc, char *argv[]) {
     
     close(fd_pipe_controlador);		// Se cierra el descriptor del pipe hacia el controlador.
     close(fd_pipe_respuesta);		// Se cierra el descriptor del pipe por el cual se reciben respuestas.
-    unlink(pipeRespuesta);		// Se elimina físicamente el pipe FIFO de respuesta del agente.
+    unlink(pipeRespuesta);		    // Se elimina físicamente el pipe FIFO de respuesta del agente.
 
     return 0;
 }
