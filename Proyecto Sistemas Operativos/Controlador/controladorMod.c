@@ -89,17 +89,14 @@ void parsearArgumentos(int argc, char *argv[]) {
     }
 }
 
-
 void validarParametros(void) {
     if (horaIni < HORA_MIN || horaIni > HORA_MAX) { // Se verifica si la hora inicial está fuera del rango permitido
-        fprintf(stderr, "Error: horaIni (%d) fuera del rango [%d, %d]\n",
-                horaIni, HORA_MIN, HORA_MAX); // Se imprime mensaje de error indicando el rango válido
+        fprintf(stderr, "Error: horaIni (%d) fuera del rango [%d, %d]\n", horaIni, HORA_MIN, HORA_MAX); // Se imprime mensaje de error indicando el rango válido
         exit(EXIT_FAILURE); // Se finaliza el programa debido a parámetro inválido
     }
 
     if (horaFin < HORA_MIN || horaFin > HORA_MAX || horaFin <= horaIni) { // Se verifica si la hora final es inválida o menor/igual que la inicial
-        fprintf(stderr, "Error: horaFin (%d) debe estar en [%d, %d] y ser > horaIni (%d)\n",
-                horaFin, HORA_MIN, HORA_MAX, horaIni); // Se imprime mensaje específico indicando el error
+        fprintf(stderr, "Error: horaFin (%d) debe estar en [%d, %d] y ser > horaIni (%d)\n", horaFin, HORA_MIN, HORA_MAX, horaIni); // Se imprime mensaje específico indicando el error
         exit(EXIT_FAILURE); // Se termina la ejecución porque los parámetros no tienen coherencia
     }
 
@@ -118,7 +115,6 @@ void validarParametros(void) {
         exit(EXIT_FAILURE); // Se finaliza por falta de parámetro esencial
     }
 }
-
 
 void inicializarEstado(void) {
     horaActual = horaIni; // Se asigna la hora inicial de simulación como hora actual
@@ -145,7 +141,6 @@ void inicializarEstado(void) {
     cnt_negadas_aforo       = 0; // Se inicializa contador de negaciones por exceder el aforo máximo
 }
 
-
 void crearYPonerPipeRecibe(void) {
     int rc = mkfifo(nombrePipeRecibe, 0666); // Se crea el FIFO con permisos de lectura y escritura para todos
     if (rc == -1) { // Se verifica si ocurrió un error al intentar crear el FIFO
@@ -162,10 +157,8 @@ void crearYPonerPipeRecibe(void) {
     }
 
     printf("Controlador: pipe de recepción '%s' creado y abierto.\n", nombrePipeRecibe); // Se informa que el pipe fue creado y abierto correctamente
-    printf("Simulación desde hora %d hasta %d, %d seg/hora, aforo máximo %d personas.\n",
-           horaIni, horaFin, segHoras, aforoMaximo); // Se imprime la configuración inicial de la simulación
+    printf("Simulación desde hora %d hasta %d, %d seg/hora, aforo máximo %d personas.\n", horaIni, horaFin, segHoras, aforoMaximo); // Se imprime la configuración inicial de la simulación
 }
-
 
 void *hiloReloj(void *arg) {
     (void)arg; // Se descarta el argumento ya que no se utiliza en esta función
@@ -181,7 +174,7 @@ void *hiloReloj(void *arg) {
             break; // Se interrumpe el ciclo para terminar el hilo
         }
 
-        avanzarHoraSimulacion(); // Se incrementa la hora simulada actual
+        horaActual++; // Se incrementa la hora simulada actual
         imprimirEstadoHora(); // Se imprime el estado correspondiente a la nueva hora
 
         pthread_mutex_unlock(&mutex_estado); // Se libera el mutex para permitir que otros hilos accedan al estado
@@ -217,8 +210,7 @@ void *hiloAtencionSolicitudes(void *arg) {
             usleep(100000); // Se duerme un poco para evitar ocupación excesiva de CPU
             continue; // Se continúa al siguiente ciclo de lectura
         } else if (leidos != (ssize_t)sizeof(MensajeSolicitud)) { // Se verifica si el mensaje está incompleto o corrupto
-            fprintf(stderr, "Advertencia: tamaño de mensaje inesperado (%zd bytes)\n",
-                    leidos); // Se advierte sobre el tamaño incorrecto
+            fprintf(stderr, "Advertencia: tamaño de mensaje inesperado (%zd bytes)\n", leidos); // Se advierte sobre el tamaño incorrecto
             continue; // Se ignora el mensaje defectuoso
         }
 
@@ -236,17 +228,13 @@ void procesarMensaje(const MensajeSolicitud *msg) {
         int hora_actual_local = horaActual; // Se copia la hora actual localmente para evitar inconsistencia
         pthread_mutex_unlock(&mutex_estado); // Se libera el mutex tras modificar o consultar el estado
 
-        printf("[Registro] Agente: %s, pipe respuesta: %s (idx=%d)\n",
-               msg->nombre_agente, msg->pipe_respuesta, idx); // Se imprime información del registro realizado
+        printf("[Registro] Agente: %s, pipe respuesta: %s (idx=%d)\n", msg->nombre_agente, msg->pipe_respuesta, idx); // Se imprime información del registro realizado
 
         MensajeRespuesta resp; // Se crea la estructura de respuesta
         resp.codigo_respuesta  = RESP_OK; // Se asigna código de éxito
         resp.hora_asignada     = hora_actual_local; // Se devuelve la hora actual como referencia
         resp.hora_asignada_fin = hora_actual_local; // Se deja igual porque el registro no ocupa horas
-        snprintf(resp.mensaje, sizeof(resp.mensaje),
-                 "Registro exitoso. Hora actual de simulación: %d",
-                 hora_actual_local); // Se genera el mensaje de texto para el agente
-
+        snprintf(resp.mensaje, sizeof(resp.mensaje), "Registro exitoso. Hora actual de simulación: %d", hora_actual_local); // Se genera el mensaje de texto para el agente
         enviarRespuestaAAgente(msg->nombre_agente, &resp); // Se envía la respuesta al agente mediante su pipe
 
     } else if (msg->tipo == 1) { // Se verifica si el mensaje es una solicitud de reserva
@@ -261,19 +249,13 @@ void procesarMensaje(const MensajeSolicitud *msg) {
         hora_solicitada   = msg->hora_solicitada; // Se toma la hora solicitada por el agente
         n_personas        = msg->n_personas; // Se toma la cantidad de personas indicadas en la solicitud
 
-        printf("[Solicitud] Agente: %s, Familia: %s, Hora: %d, Personas: %d\n",
-               msg->nombre_agente,
-               msg->familia,
-               hora_solicitada,
-               n_personas); // Se imprime información detallada de la solicitud recibida
+        printf("[Solicitud] Agente: %s, Familia: %s, Hora: %d, Personas: %d\n", msg->nombre_agente, msg->familia, hora_solicitada, n_personas); // Se imprime información detallada de la solicitud recibida
 
         if (n_personas > aforoMaximo) { // Se verifica si la solicitud excede el aforo permitido
             resp.codigo_respuesta  = RESP_NEG_AFORO_EXCEDE; // Se asigna código de rechazo por aforo
             resp.hora_asignada     = -1; // Se indica que no hay hora asignada
             resp.hora_asignada_fin = -1; // Se deja sin hora final
-            snprintf(resp.mensaje, sizeof(resp.mensaje),
-                     "Solicitud negada: número de personas (%d) excede el aforo máximo (%d).",
-                     n_personas, aforoMaximo); // Se explica la razón del rechazo
+            snprintf(resp.mensaje, sizeof(resp.mensaje), "Solicitud negada: número de personas (%d) excede el aforo máximo (%d).", n_personas, aforoMaximo); // Se explica la razón del rechazo
             cnt_negadas_total++; // Se incrementa el contador de negaciones totales
             cnt_negadas_aforo++; // Se incrementa el contador de negaciones por aforo
 
@@ -281,9 +263,7 @@ void procesarMensaje(const MensajeSolicitud *msg) {
             resp.codigo_respuesta  = RESP_NEG_FUERA_RANGO; // Se asigna rechazo por rango inválido
             resp.hora_asignada     = -1; // No hay hora asignada
             resp.hora_asignada_fin = -1; // Sin hora final
-            snprintf(resp.mensaje, sizeof(resp.mensaje),
-                     "Solicitud negada: hora solicitada (%d) es mayor a la hora fin de simulación (%d).",
-                     hora_solicitada, horaFin); // Se explica el rechazo
+            snprintf(resp.mensaje, sizeof(resp.mensaje), "Solicitud negada: hora solicitada (%d) es mayor a la hora fin de simulación (%d).", hora_solicitada, horaFin); // Se explica el rechazo
             cnt_negadas_total++; // Se incrementa contador total de negadas
             cnt_negadas_fuera_rango++; // Se incrementa por fuera de rango
 
@@ -305,32 +285,24 @@ void procesarMensaje(const MensajeSolicitud *msg) {
                 resp.codigo_respuesta  = RESP_OK; // Se indica que la reserva fue aceptada
                 resp.hora_asignada     = hora_asignada; // Se informa la hora asignada
                 resp.hora_asignada_fin = hora_asignada + 2; // Se asignan dos horas consecutivas
-                snprintf(resp.mensaje, sizeof(resp.mensaje),
-                         "Reserva aceptada en la hora solicitada. Ingreso: %d, salida: %d.",
-                         resp.hora_asignada, resp.hora_asignada_fin); // Se prepara mensaje confirmatorio
+                snprintf(resp.mensaje, sizeof(resp.mensaje), "Reserva aceptada en la hora solicitada. Ingreso: %d, salida: %d.", resp.hora_asignada, resp.hora_asignada_fin); // Se prepara mensaje confirmatorio
                 cnt_aceptadas_hora++; // Se incrementa contador de reservas aceptadas en la hora original
 
             } else {
-                int inicio_busqueda = es_extemporanea ? hora_actual_local
-                                                      : hora_solicitada; // Se define la hora para buscar un bloque disponible
-
+                int inicio_busqueda = es_extemporanea ? hora_actual_local : hora_solicitada; // Se define la hora para buscar un bloque disponible
                 if (inicio_busqueda < horaIni) { // Se ajusta si la hora es menor que la hora mínima de simulación
                     inicio_busqueda = horaIni;
                 }
 
                 int h_encontrada = -1; // Se inicializa la variable donde se guardará la hora encontrada
-                int ok_bloque = buscarBloqueDosHoras(inicio_busqueda,
-                                                     n_personas,
-                                                     &h_encontrada); // Se busca un bloque alternativo de 2 horas
+                int ok_bloque = buscarBloqueDosHoras(inicio_busqueda, n_personas, &h_encontrada); // Se busca un bloque alternativo de 2 horas
 
                 if (ok_bloque) { // Si se encuentra un bloque adecuado
                     agregarReserva(msg->familia, h_encontrada, n_personas); // Se registra la reserva reprogramada
                     resp.codigo_respuesta  = RESP_REPROGRAMADA; // Se indica reprogramación
                     resp.hora_asignada     = h_encontrada; // Se retorna la hora alternativa
                     resp.hora_asignada_fin = h_encontrada + 2; // Se establece el bloque de dos horas
-                    snprintf(resp.mensaje, sizeof(resp.mensaje),
-                             "Reserva reprogramada. Nueva hora de ingreso: %d, salida: %d.",
-                             resp.hora_asignada, resp.hora_asignada_fin); // Se informa de la reprogramación
+                    snprintf(resp.mensaje, sizeof(resp.mensaje), "Reserva reprogramada. Nueva hora de ingreso: %d, salida: %d.", resp.hora_asignada, resp.hora_asignada_fin); // Se informa de la reprogramación
                     cnt_reprogramadas++; // Se incrementa el contador de reprogramadas
 
                 } else { // Si no se encontró bloque disponible en ningún horario válido
@@ -339,14 +311,11 @@ void procesarMensaje(const MensajeSolicitud *msg) {
 
                     if (es_extemporanea) { // Se verifica si fue negada por extemporánea
                         resp.codigo_respuesta = RESP_NEG_EXTEMPORANEA; // Se asigna código de extemporánea
-                        snprintf(resp.mensaje, sizeof(resp.mensaje),
-                                 "Solicitud negada: la hora solicitada (%d) ya pasó y no se encontró bloque de 2 horas disponible.",
-                                 hora_solicitada); // Se genera mensaje explicativo
+                        snprintf(resp.mensaje, sizeof(resp.mensaje), "Solicitud negada: la hora solicitada (%d) ya pasó y no se encontró bloque de 2 horas disponible.", hora_solicitada); // Se genera mensaje explicativo
                         cnt_negadas_extemp++; // Se incrementa contador de negaciones por extemporaneidad
                     } else {
                         resp.codigo_respuesta = RESP_NEG_SIN_CUPO; // Se marca como negada por falta de cupo
-                        snprintf(resp.mensaje, sizeof(resp.mensaje),
-                                 "Solicitud negada: no hay cupo disponible en ningún bloque de 2 horas."); // Mensaje explicativo
+                        snprintf(resp.mensaje, sizeof(resp.mensaje), "Solicitud negada: no hay cupo disponible en ningún bloque de 2 horas."); // Mensaje explicativo
                         cnt_negadas_sin_cupo++; // Se incrementa contador de negaciones por cupo
                     }
                     cnt_negadas_total++; // Se suman al total de negadas
@@ -363,13 +332,8 @@ void procesarMensaje(const MensajeSolicitud *msg) {
     }
 }
 
-void avanzarHoraSimulacion(void) {
-    horaActual++;
-}
-
-void imprimirEstadoHora(void) {
-    printf("\n[Simulación] Ha transcurrido una hora. Hora actual: %d\n",
-           horaActual); // Se imprime mensaje indicando el avance de una hora en la simulación y su valor actual
+void imprimirEstadoHora() {
+    printf("\n[Simulación] Ha transcurrido una hora. Hora actual: %d\n", horaActual); // Se imprime mensaje indicando el avance de una hora en la simulación y su valor actual
 
     int personas_dentro = 0; // Se inicializa un contador para sumar cuántas personas están dentro del parque
 
@@ -409,8 +373,7 @@ void imprimirEstadoHora(void) {
     printf("Personas en el parque en esta hora: %d\n", personas_dentro); // Se imprime el total de personas presentes en el parque
 }
 
-
-void generarReporteFinal(void) {
+void generarReporteFinal() {
     int h; // Se declara variable para recorrer las horas de simulación
     int max_personas = -1; // Se inicializa el contador de máximo de personas observadas en cualquier hora
     int min_personas = 1000000; // Se inicializa el contador de mínimo de personas con un valor muy alto
@@ -422,8 +385,7 @@ void generarReporteFinal(void) {
     }
 
     printf("\n========== REPORTE FINAL DEL CONTROLADOR ==========\n"); // Se imprime encabezado del reporte final
-    printf("Parámetros de simulación: horaIni=%d, horaFin=%d, aforoMáximo=%d personas\n",
-           horaIni, horaFin, aforoMaximo); // Se imprimen los parámetros básicos usados en la simulación
+    printf("Parámetros de simulación: horaIni=%d, horaFin=%d, aforoMáximo=%d personas\n", horaIni, horaFin, aforoMaximo); // Se imprimen los parámetros básicos usados en la simulación
 
     printf("\na) Horas pico (mayor número de personas = %d): ", max_personas); // Se imprime etiqueta para horas pico
     for (h = horaIni; h <= horaFin; h++) { // Se recorren todas las horas buscando horas con máximo de personas
@@ -454,7 +416,6 @@ void generarReporteFinal(void) {
     printf("===================================================\n"); // Se imprime cierre del reporte
 }
 
-
 int registrarAgente(const MensajeSolicitud *msg) {
     int idx = buscarIndiceAgente(msg->nombre_agente); // Se busca si el agente ya está registrado previamente
     if (idx >= 0) { // Se verifica si el agente ya existe en la lista
@@ -482,7 +443,6 @@ int registrarAgente(const MensajeSolicitud *msg) {
     return -1; // Se retorna -1 indicando que no fue posible registrar un nuevo agente
 }
 
-
 int buscarIndiceAgente(const char *nombre_agente) {
     for (int i = 0; i < MAX_AGENTES; i++) { // Se recorre la lista completa de agentes registrados
         if (agentes[i].activo && // Se verifica si el agente en esta posición está activo
@@ -493,12 +453,10 @@ int buscarIndiceAgente(const char *nombre_agente) {
     return -1; // Se retorna -1 si no se encontró ningún agente con ese nombre
 }
 
-int enviarRespuestaAAgente(const char *nombre_agente,
-                           const MensajeRespuesta *resp) {
+int enviarRespuestaAAgente(const char *nombre_agente, const MensajeRespuesta *resp) {
     int idx = buscarIndiceAgente(nombre_agente); // Se busca el índice del agente usando su nombre
     if (idx < 0) { // Se verifica si el agente no fue encontrado
-        fprintf(stderr, "No se encontró el agente '%s' para enviar respuesta.\n",
-                nombre_agente); // Se imprime mensaje de error indicando agente inexistente
+        fprintf(stderr, "No se encontró el agente '%s' para enviar respuesta.\n", nombre_agente); // Se imprime mensaje de error indicando agente inexistente
         return -1; // Se retorna -1 indicando falla
     }
 
@@ -523,10 +481,7 @@ int enviarRespuestaAAgente(const char *nombre_agente,
     return 0; // Se retorna 0 indicando que la respuesta fue enviada correctamente
 }
 
-
-int buscarBloqueDosHoras(int hora_inicio_busqueda,
-                         int personas,
-                         int *hora_encontrada) {
+int buscarBloqueDosHoras(int hora_inicio_busqueda, int personas, int *hora_encontrada) {
     int h_ini = hora_inicio_busqueda; // Se inicializa la hora inicial de búsqueda con la hora solicitada
 
     if (h_ini < horaIni) { // Se verifica si la hora inicial cae antes del inicio de la simulación
@@ -544,9 +499,7 @@ int buscarBloqueDosHoras(int hora_inicio_busqueda,
     return 0; // Se retorna 0 indicando que no hay bloques de dos horas con el espacio requerido
 }
 
-void agregarReserva(const char *familia,
-                    int hora_inicio,
-                    int personas) {
+void agregarReserva(const char *familia, int hora_inicio, int personas) {
     if (hora_inicio < 0 || hora_inicio > HORA_MAX - 1) { // Se verifica que la hora de inicio esté dentro del rango permitido
         return; // Se retorna sin hacer nada si la hora es inválida
     }
@@ -570,7 +523,7 @@ void agregarReserva(const char *familia,
     }
 }
 
-static void errorFatal(const char *msg) {
+void errorFatal(const char *msg) {
     perror(msg); // Se imprime el mensaje de error junto con la descripción del errno del sistema
     exit(EXIT_FAILURE); // Se finaliza inmediatamente la ejecución del programa indicando fallo
 }
