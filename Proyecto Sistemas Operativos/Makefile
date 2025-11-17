@@ -46,7 +46,7 @@ controlador: Controlador/controlador.c Controlador/controladorMod.c Controlador/
 	$(GCC) $(CFLAGS) Controlador/controlador.c Controlador/controladorMod.c -o controlador
 
 # Regla para compilar el programa 'agente'
-agente: Agente/agente.c agenteMod.c agente.h
+agente: Agente/agente.c Agente/agenteMod.c Agente/agente.h
 	$(GCC) $(CFLAGS) Agente/agente.c Agente/agenteMod.c -o agente
 
 
