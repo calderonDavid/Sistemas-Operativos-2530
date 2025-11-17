@@ -42,7 +42,7 @@ all: $(PROGRAMAS)
 # ---------------------------------------------------------
 
 # Regla para compilar el programa 'controlador'
-controlador: Controlado/controlador.c Controlador/controlarMod.c Controlador/controlador.h
+controlador: Controlador/controlador.c Controlador/controladorMod.c Controlador/controlador.h
 	$(GCC) $(CFLAGS) Controlador/controlador.c Controlador/controladorMod.c -o controlador
 
 # Regla para compilar el programa 'agente'
