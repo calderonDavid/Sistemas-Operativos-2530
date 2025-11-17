@@ -47,7 +47,7 @@ controlador: controlador.c
 
 # Regla para compilar el programa 'agente'
 agente: Agente/agente.c agenteMod.c agente.h
-	$(GCC) $(CFLAGS) Agente/agente.c Agente/agente_funciones.c -o agente
+	$(GCC) $(CFLAGS) Agente/agente.c Agente/agenteMod.c -o agente
 
 
 # ---------------------------------------------------------
