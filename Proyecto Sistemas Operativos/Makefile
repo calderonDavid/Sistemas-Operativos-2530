@@ -4,7 +4,7 @@
 # Autores: David Santiago Calderon Idarraga,
 #          Alejandro Lopez,
 #          Santiago Bautista
-# Fecha: 11/10/2025
+# Fecha: 16/10/2025
 # Materia: Sistemas Operativos
 # Tema: Proyecto
 #
