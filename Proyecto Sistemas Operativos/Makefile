@@ -42,8 +42,8 @@ all: $(PROGRAMAS)
 # ---------------------------------------------------------
 
 # Regla para compilar el programa 'controlador'
-controlador: controlador.c
-	$(GCC) $(CFLAGS) controlador.c -o controlador
+controlador: Controlado/controlador.c Controlador/controlarMod.c Controlador/controlador.h
+	$(GCC) $(CFLAGS) Controlador/controlador.c Controlador/controladorMod.c -o controlador
 
 # Regla para compilar el programa 'agente'
 agente: Agente/agente.c agenteMod.c agente.h
