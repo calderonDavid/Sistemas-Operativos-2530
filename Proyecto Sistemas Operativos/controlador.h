@@ -1,3 +1,23 @@
+/********************************************************
+*  Pontificia Universidad Javeriana
+*  Facultad de Ingeniería – Ingeniería de Sistemas
+*
+*  Proyecto: Sistema Simulador de Reservas de Parque
+*  Archivo: agente.h
+*  Descripción:
+*     Archivo de cabecera del proceso cliente "AControlador de
+*     reserva". Contiene las definiciones de constantes,
+*     estructuras de datos, variables globales y los
+*     prototipos de funciones empleadas en el módulo
+*     principal y en las funciones auxiliares del controlador.
+*
+*  Autores:
+*     Santiago Bautista Velasquez
+*     Alejandro Lopez
+*     David Calderon
+*
+*  Fecha: 16/11/25
+********************************************************/
 #ifndef CONTROLADOR_H
 #define CONTROLADOR_H
 
