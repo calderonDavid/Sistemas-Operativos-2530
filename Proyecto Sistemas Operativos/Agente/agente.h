@@ -67,12 +67,12 @@ typedef struct {
 
 /* Variables globales */
 // Se declaran variables globales para almacenar los parámetros recibidos.
-extern char nombreAgente[MAX_NOMBRE] = "";         // Se almacena el nombre del agente.
-extern char archivoSolicitudes[128] = "";          // Se almacena el archivo CSV de solicitudes.
-extern char pipeRecibe[MAX_PIPE_NAME] = "";        // Se almacena el pipe hacia el controlador.
-extern char pipeRespuesta[MAX_PIPE_NAME] = "";     // Se almacena el pipe por el cual llegan respuestas.
-extern int fd_pipe_controlador = -1;               // Se almacena el descriptor del pipe del controlador.
-extern int fd_pipe_respuesta   = -1;               // Se almacena el descriptor del pipe de respuesta.
+extern char nombreAgente[MAX_NOMBRE];         // Se almacena el nombre del agente.
+extern char archivoSolicitudes[128];          // Se almacena el archivo CSV de solicitudes.
+extern char pipeRecibe[MAX_PIPE_NAME];        // Se almacena el pipe hacia el controlador.
+extern char pipeRespuesta[MAX_PIPE_NAME];     // Se almacena el pipe por el cual llegan respuestas.
+extern int fd_pipe_controlador;               // Se almacena el descriptor del pipe del controlador.
+extern int fd_pipe_respuesta;                 // Se almacena el descriptor del pipe de respuesta.
 
 /* Prototipos */
 // Se declaran prototipos de funciones usadas en el programa.
