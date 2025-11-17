@@ -16,7 +16,7 @@
 *     Alejandro Lopez
 *     David Calderon
 *
-*  Fecha: 12/11/25
+*  Fecha: 16/11/25
 ********************************************************/
 
 #include <stdio.h>      // Se incluye la biblioteca estándar de entrada y salida
