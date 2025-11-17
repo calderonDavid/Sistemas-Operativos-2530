@@ -16,7 +16,7 @@
 *	    Alejandro Lopez
 *	    David Calderon
 *
-*  
+*  Fecha: 16/10/2025
 *************************************************************/
 #include "controlador.h"
 
