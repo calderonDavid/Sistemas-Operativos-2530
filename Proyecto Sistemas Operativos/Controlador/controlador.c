@@ -12,9 +12,9 @@
 *     con base en el aforo por hora.
 *
 *  Autores:
-*     	Santiago Bautista Velasquez
+*       David Calderon
+*    	Santiago Bautista Velasquez
 *	    Alejandro Lopez
-*	    David Calderon
 *
 *  Fecha: 16/10/2025
 *************************************************************/
