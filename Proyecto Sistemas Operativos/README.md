@@ -63,7 +63,6 @@ Tecnologías Utilizadas
 Lenguaje C POSIX Threads (pthread) Pipes FIFO Linux Makefile Git y GitHub
 
 Autor
-
-Santiago Bautista Velásquez
+David Santiago Calderón Idárraga
 
 Pontificia Universidad Javeriana – Ingeniería de Sistemas

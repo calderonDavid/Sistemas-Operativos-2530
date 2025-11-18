@@ -89,7 +89,7 @@ void parsearArgumentos(int argc, char *argv[]) {
     }
 }
 
-void validarParametros(void) {
+void validarParametros(void) {ñe
     if (horaIni < HORA_MIN || horaIni > HORA_MAX) { // Se verifica si la hora inicial está fuera del rango permitido
         fprintf(stderr, "Error: horaIni (%d) fuera del rango [%d, %d]\n", horaIni, HORA_MIN, HORA_MAX); // Se imprime mensaje de error indicando el rango válido
         exit(EXIT_FAILURE); // Se finaliza el programa debido a parámetro inválido
