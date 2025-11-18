@@ -1,9 +1,10 @@
 # -----------------------------------------------------------
 # Pontificia Universidad Javeriana
 # Proyecto: Sistema Simulador de Reservas de Parque 
-# Autores: David Santiago Calderon Idarraga,
-#          Alejandro Lopez,
-#          Santiago Bautista
+# Autores: 
+#       David Calderon
+#    	Santiago Bautista Velasquez
+#	    Alejandro Lopez
 # Fecha: 16/10/2025
 # Materia: Sistemas Operativos
 # Tema: Proyecto
