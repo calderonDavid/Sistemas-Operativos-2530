@@ -13,9 +13,9 @@
 *     archivo principal agente.c.
 *
 *  Autores:
-*     Santiago Bautista Velasquez
-*     Alejandro Lopez
-*     David Calderon
+*       David Calderon
+*    	Santiago Bautista Velasquez
+*	    Alejandro Lopez
 *
 *  Fecha: 16/11/25
 ********************************************************/
